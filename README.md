@@ -40,7 +40,7 @@ Measured out-of-sample, on a held-out time-ordered test split:
 </div>
 
 <div align="center">
-<img src="kpt2/assets/error_distributions.png" width="850" alt="Error distributions across the three models">
+<img src="assets/mae_comparison.png" width="700" alt="MAE comparison across baseline, shadow, and CRS models">
 </div>
 
 > The Shadow Model is given **no access to the merchant's timestamp at
@@ -51,14 +51,17 @@ Measured out-of-sample, on a held-out time-ordered test split:
 ## 🧠 How it works
 
 <div align="center">
-<img src="kpt2/assets/workflow_graph.png" width="750" alt="Kitchen workflow dependency graph">
+<img src="assets/signal_fusion.png" width="750" alt="Four signals fused into one Composite Readiness Score">
 </div>
 
 A kitchen order isn't one number — it's a small dependency graph of
 prep steps, some parallel, some sequential. The true minimum prep time
 is the **critical path** through that graph, computed with a
 hand-rolled topological sort (Kahn's algorithm) + dynamic-programming
-longest-path pass — no graph library, just the algorithm.
+longest-path pass — no graph library, just the algorithm. That
+workflow-graph estimate is one of four signals fused above; see
+[`kpt2/README.md`](kpt2/README.md#kitchen-workflow-dependency-graph) for
+the graph diagram itself.
 
 | Signal | Technique | Module |
 |:--|:--|:--|
@@ -105,12 +108,13 @@ pytest -v
 ```
 .
 ├── .github/workflows/tests.yml   ← CI: runs the test suite on every push
+├── assets/                       ← images used only by this root README
 └── kpt2/                         ← the project (see kpt2/README.md)
     ├── main.py                     CLI entry point
     ├── src/kpt2/                   source modules
     │   └── db/                     MySQL schema + SQLAlchemy data layer
     ├── tests/                      pytest suite (17 tests)
-    └── assets/                     sample output plots
+    └── assets/                     sample output plots (used by kpt2/README.md)
 ```
 
 ## 🛠 Tech stack
